@@ -90,6 +90,8 @@ export const ChatInterface: React.FC = () => {
           Your goal is to help users find the right aesthetic or dermatological service by asking 2-3 targeted diagnostic questions.
           Speak Hungarian. Be polite, professional, yet friendly. 
           Keep your responses concise (max 2-3 sentences).
+
+          IMPORTANT: The user has already been greeted. DO NOT introduce yourself again. DO NOT say "Üdvözlöm" or "Dr. Kondorosi Ildikó asszisztense vagyok". Start directly by addressing the user's input/problem.
           
           IMPORTANT RULE FOR INTERACTION:
           At the end of EVERY question you ask, you MUST provide 3-4 short, clickable options for the user to answer easily.
@@ -205,6 +207,8 @@ export const ChatInterface: React.FC = () => {
           Your goal is to help users find the right aesthetic or dermatological service by asking 2-3 targeted diagnostic questions.
           Speak Hungarian. Be polite, professional, yet friendly. 
           Keep your responses concise (max 2-3 sentences).
+
+          IMPORTANT: The user has already been greeted. DO NOT introduce yourself again. DO NOT say "Üdvözlöm" or "Dr. Kondorosi Ildikó asszisztense vagyok". Start directly by addressing the user's input/problem.
           
           IMPORTANT RULE FOR INTERACTION:
           At the end of EVERY question you ask, you MUST provide 3-4 short, clickable options for the user to answer easily.
