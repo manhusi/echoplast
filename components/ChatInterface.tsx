@@ -3,7 +3,7 @@ import { Send, Bot, Sparkles, RefreshCw, CalendarCheck, ArrowRightCircle } from 
 import { GoogleGenAI, FunctionDeclaration, Type } from "@google/genai";
 import { FULL_SERVICES_DATA } from '../constants';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 // Define the tool for recommending a service
 const recommendServiceFunction: FunctionDeclaration = {
