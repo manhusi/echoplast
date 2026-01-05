@@ -25,11 +25,15 @@ const recommendServiceFunction: FunctionDeclaration = {
   },
 };
 
-const DEFAULT_SUGGESTIONS = ['Ránctalanítás', 'Pattanásos bőr', 'Pigmentfoltok', 'Bőrmegújítás'];
+const DEFAULT_SUGGESTIONS = ['Arcfiatalítás & Ráncok', 'Bőrproblémák (Akne/Folt)', 'Testkezelés & Alakformálás', 'Nem tudom, tanácsot kérek'];
 
 export const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<{ id: number; sender: 'bot' | 'user'; text?: string; isRecommendation?: boolean; serviceData?: any }[]>([
-    { id: 1, sender: 'bot', text: 'Üdvözlöm a Dunakanyar Esztétika virtuális asszisztensében! 👋' },
+    { 
+      id: 1, 
+      sender: 'bot', 
+      text: 'Üdvözlöm! Dr. Kondorosi Ildikó virtuális asszisztense vagyok. Segítek eligazodni kezeléseink között és megtalálni a tökéletes megoldást az Ön számára. Mi az a probléma, ami leginkább zavarja mostanában?' 
+    },
   ]);
 
   const [inputValue, setInputValue] = useState('');
@@ -108,18 +112,6 @@ export const ChatInterface: React.FC = () => {
         },
       });
       setChatSession(chat);
-
-      // Simulate initial typing for the greeting extension
-      setTimeout(() => setIsTyping(true), 800);
-      setTimeout(() => {
-        setIsTyping(false);
-        setMessages(prev => [
-          ...prev, 
-          { id: 2, sender: 'bot', text: 'Dr. Kondorosi Ildikó vagyok. Segítek megtalálni az Ön bőrének legmegfelelőbb kezelést. Miben segíthetek ma?' }
-        ]);
-        // Reset to default suggestions initially
-        setCurrentSuggestions(['Ráncok és Anti-aging', 'Problémás bőr (Akne)', 'Esztétikai beavatkozás', 'Bőrgyógyászat']);
-      }, 2500);
     };
 
     initChat();
@@ -198,7 +190,11 @@ export const ChatInterface: React.FC = () => {
   };
 
   const restartChat = () => {
-    setMessages([{ id: 1, sender: 'bot', text: 'Miben segíthetek ma?' }]);
+    setMessages([{ 
+      id: 1, 
+      sender: 'bot', 
+      text: 'Üdvözlöm! Dr. Kondorosi Ildikó virtuális asszisztense vagyok. Segítek eligazodni kezeléseink között és megtalálni a tökéletes megoldást az Ön számára. Mi az a probléma, ami leginkább zavarja mostanában?' 
+    }]);
     setIsTyping(false);
     
     // Re-initialize chat session to clear history
@@ -227,25 +223,25 @@ export const ChatInterface: React.FC = () => {
         },
       });
       setChatSession(chat);
-      setCurrentSuggestions(['Ráncok és Anti-aging', 'Problémás bőr (Akne)', 'Esztétikai beavatkozás', 'Bőrgyógyászat']);
+      setCurrentSuggestions(DEFAULT_SUGGESTIONS);
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-2xl shadow-primary-900/10 overflow-hidden border border-white/50 flex flex-col h-[450px] md:h-[550px] relative z-20 backdrop-blur-sm transition-all duration-300">
+    <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-2xl shadow-primary-900/10 overflow-hidden border border-white/50 flex flex-col h-[500px] md:h-[600px] relative z-20 backdrop-blur-sm transition-all duration-300">
       {/* Premium Header */}
-      <div className="bg-white p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
+      <div className="bg-white p-4 border-b border-gray-100 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
-              <Bot size={24} strokeWidth={1.5} />
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+              <Bot size={20} strokeWidth={1.5} />
             </div>
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
+            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
           </div>
           <div>
-            <h3 className="font-heading font-bold text-gray-900 text-lg leading-tight">AI Asszisztens</h3>
+            <h3 className="font-heading font-bold text-gray-900 text-base leading-tight">AI Asszisztens</h3>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-              <p className="text-gray-500 text-xs font-medium">Dr. Kondorosi Ildikó</p>
+              <p className="text-gray-500 text-[10px] font-medium uppercase tracking-wide">Dr. Kondorosi Ildikó</p>
             </div>
           </div>
         </div>
@@ -254,14 +250,14 @@ export const ChatInterface: React.FC = () => {
           className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
           title="Beszélgetés újrakezdése"
         >
-          <RefreshCw size={18} />
+          <RefreshCw size={16} />
         </button>
       </div>
 
       {/* Messages Area */}
       <div 
         ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto p-5 space-y-6 bg-gradient-to-b from-gray-50/50 to-white scrollbar-thin scrollbar-thumb-gray-200"
+        className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-50/50 to-white scrollbar-thin scrollbar-thumb-gray-200"
       >
         {messages.map((msg) => (
           <div
@@ -320,19 +316,17 @@ export const ChatInterface: React.FC = () => {
         )}
       </div>
 
-      {/* Suggestion Chips Area - Always Visible Contextual Options */}
+      {/* Suggestion Chips Area - Compact, Flat, No Header */}
       {currentSuggestions.length > 0 && (
-        <div className="px-5 pb-3 bg-white border-t border-gray-50 pt-3 shrink-0">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-1">Válasszon opciót:</p>
-          <div className="flex flex-wrap gap-2">
+        <div className="px-4 pb-2 bg-white border-t border-gray-50 pt-2 shrink-0">
+          <div className="grid grid-cols-2 gap-2">
             {currentSuggestions.map((chip, idx) => (
                <button 
                  key={`${chip}-${idx}`}
                  onClick={() => handleSend(chip)}
-                 className="flex-grow md:flex-grow-0 text-center whitespace-normal text-sm font-bold bg-white text-gray-900 px-4 py-2.5 rounded-xl border-2 border-primary-100 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-800 transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 group"
+                 className="text-center whitespace-normal text-xs font-bold bg-white text-gray-700 px-2 py-2 rounded-lg border border-gray-200 hover:border-primary-400 hover:bg-primary-50 hover:text-primary-700 transition-all shadow-sm active:scale-95 flex items-center justify-center gap-1 group min-h-[40px]"
                >
                  {chip}
-                 <ArrowRightCircle size={14} className="opacity-0 group-hover:opacity-100 transition-opacity text-primary-500" />
                </button>
             ))}
           </div>
@@ -340,13 +334,13 @@ export const ChatInterface: React.FC = () => {
       )}
 
       {/* Input Area */}
-      <div className="p-4 bg-white border-t border-gray-100 shrink-0">
+      <div className="p-3 bg-white border-t border-gray-100 shrink-0">
         <div className="relative flex items-center gap-2 group">
           <input
             id="chatbot-input"
             type="text"
             placeholder="Írjon üzenetet..."
-            className="w-full bg-gray-50 text-gray-700 text-sm rounded-xl py-3.5 pl-5 pr-12 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:bg-white transition-all border border-gray-100 focus:border-primary-200"
+            className="w-full bg-gray-50 text-gray-700 text-sm rounded-xl py-3 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:bg-white transition-all border border-gray-100 focus:border-primary-200"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -354,9 +348,9 @@ export const ChatInterface: React.FC = () => {
           <button 
             onClick={() => handleSend()}
             disabled={!inputValue.trim()}
-            className="absolute right-2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:hover:bg-primary-600 transition-all shadow-md hover:shadow-lg"
+            className="absolute right-2 p-1.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:hover:bg-primary-600 transition-all shadow-md hover:shadow-lg"
           >
-            <Send size={18} />
+            <Send size={16} />
           </button>
         </div>
       </div>
