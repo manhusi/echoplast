@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Send, Bot, Sparkles, RefreshCw, CalendarCheck, ArrowRightCircle } from 'lucide-react';
+import { Send, Bot, Sparkles, RefreshCw, CalendarCheck } from 'lucide-react';
 import { GoogleGenAI, FunctionDeclaration, Type } from "@google/genai";
 import { FULL_SERVICES_DATA } from '../constants';
 
@@ -11,7 +10,7 @@ const recommendServiceFunction: FunctionDeclaration = {
   name: 'recommendService',
   parameters: {
     type: Type.OBJECT,
-    description: 'Recommend a specific aesthetic or dermatological service to the user and explain why.',
+    description: 'Recommend a specific massage service to the user and explain why.',
     properties: {
       serviceName: {
         type: Type.STRING,
@@ -26,15 +25,14 @@ const recommendServiceFunction: FunctionDeclaration = {
   },
 };
 
-const DEFAULT_SUGGESTIONS = ['Arcfiatalítás & Ráncok', 'Bőrproblémák (Akne/Folt)', 'Testkezelés & Alakformálás', 'Nem tudom, tanácsot kérek'];
+const DEFAULT_SUGGESTIONS = ['Izomfeszültség', 'Stressz & Relaxáció', 'Sport utáni regeneráció', 'Tanácsot kérek'];
 
 export const ChatInterface: React.FC = () => {
-  const navigate = useNavigate();
   const [messages, setMessages] = useState<{ id: number; sender: 'bot' | 'user'; text?: string; isRecommendation?: boolean; serviceData?: any }[]>([
     {
       id: 1,
       sender: 'bot',
-      text: 'Üdvözlöm! Dr. Kondorosi Ildikó virtuális asszisztense vagyok. Segítek eligazodni kezeléseink között és megtalálni a tökéletes megoldást az Ön számára. Mi az a probléma, ami leginkább zavarja mostanában?'
+      text: 'Üdvözlöm! Bence Masszázs Szalon virtuális asszisztense vagyok. Segítek megtalálni a számodra ideális masszázst. Mi az, ami leginkább zavar mostanában – feszültség, fájdalom, vagy egyszerűen csak kell egy kis feltöltődés?'
     },
   ]);
 
@@ -43,13 +41,11 @@ export const ChatInterface: React.FC = () => {
   const [chatSession, setChatSession] = useState<any>(null);
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(DEFAULT_SUGGESTIONS);
 
-  // Use a ref for the container instead of a bottom element to prevent page jumping
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     if (scrollContainerRef.current) {
       const { scrollHeight, clientHeight } = scrollContainerRef.current;
-      // Using scrollTo on the container specifically prevents the whole window from jumping
       scrollContainerRef.current.scrollTo({
         top: scrollHeight - clientHeight,
         behavior: 'smooth'
@@ -58,59 +54,61 @@ export const ChatInterface: React.FC = () => {
   };
 
   useEffect(() => {
-    // Small delay to ensure DOM is updated before scrolling
     const timeoutId = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timeoutId);
   }, [messages, isTyping, currentSuggestions]);
 
-  // Helper to parse options from AI text
-  // Expected format in AI response: "Some text... [OPTIONS: Option 1 | Option 2 | Option 3]"
   const parseResponse = (text: string) => {
     const optionsRegex = /\[OPTIONS: (.*?)\]/;
     const match = text.match(optionsRegex);
 
     let cleanText = text;
-    let newSuggestions = [];
+    let newSuggestions: string[] = [];
 
     if (match && match[1]) {
-      // Found options, parse them
       newSuggestions = match[1].split('|').map(s => s.trim());
-      // Remove the options tag from the display text
       cleanText = text.replace(match[0], '').trim();
     }
 
     return { cleanText, newSuggestions };
   };
 
-  // Initial sequence and chat setup
   useEffect(() => {
     const initChat = async () => {
       const chat = ai.chats.create({
         model: 'gemini-3-flash-preview',
         config: {
-          systemInstruction: `You are the virtual assistant for Dr. Kondorosi Ildikó at Dunakanyar Esztétika. 
-          Your goal is to help users find the right aesthetic or dermatological service by asking 2-3 targeted diagnostic questions.
-          Speak Hungarian. Be polite, professional, yet friendly. 
-          Keep your responses concise (max 2-3 sentences).
+          systemInstruction: `Te a Bence Masszázs Szalon virtuális asszisztense vagy Nyíregyházán. 
+          A célod, hogy segíts a felhasználóknak megtalálni a számukra ideális masszázs kezelést 2-3 célzott kérdés feltevésével.
+          Magyarul beszélj. Légy udvarias, professzionális, de barátságos. 
+          Tartsd a válaszaidat tömören (max 2-3 mondat).
 
-          IMPORTANT: The user has already been greeted. DO NOT introduce yourself again. DO NOT say "Üdvözlöm" or "Dr. Kondorosi Ildikó asszisztense vagyok". Start directly by addressing the user's input/problem.
+          FONTOS: A felhasználót már üdvözöltük. NE mutatkozz be újra. NE mondd, hogy "Üdvözlöm" vagy "Bence Masszázs asszisztense vagyok". Kezdj egyből a felhasználó problémájával/inputjával.
           
-          IMPORTANT RULE FOR INTERACTION:
-          At the end of EVERY question you ask, you MUST provide 3-4 short, clickable options for the user to answer easily.
-          Format these options strictly like this at the very end of your message: 
-          [OPTIONS: Option 1 | Option 2 | Option 3]
+          FONTOS SZABÁLY:
+          Minden kérdésed végére adj 3-4 rövid, kattintható opciót.
+          Formázd így a végén: 
+          [OPTIONS: Opció 1 | Opció 2 | Opció 3]
 
-          Example: 
-          "Milyen típusú bőrproblémát tapasztal?"
-          [OPTIONS: Ráncok | Pattanások | Pigmentfoltok | Megereszkedett bőr]
+          Példa: 
+          "Melyik testrész fáj a legjobban?"
+          [OPTIONS: Nyak/Váll | Hát | Derék | Láb]
           
-          Here is the list of available services to guide your diagnosis:
+          Elérhető szolgáltatások:
           ${JSON.stringify(FULL_SERVICES_DATA)}
 
-          Process:
-          1. Ask the user about their skin concerns. Provide [OPTIONS: ...]
-          2. Based on their answer, ask clarifying questions (location, severity, etc.). Provide relevant [OPTIONS: ...] based on the context.
-          3. When you have identified the most likely service, DO NOT just say it in text. You MUST call the 'recommendService' tool.
+          Folyamat:
+          1. Kérdezd meg milyen problémája van (feszültség, fájdalom, stressz, sport). Add meg [OPTIONS: ...]
+          2. Kérdezz pontosító kérdéseket (melyik testrész, mennyi ideje, milyen erősségű). Add meg [OPTIONS: ...]
+          3. Ha azonosítottad a szolgáltatást, használd a 'recommendService' eszközt.
+          
+          Masszázs típusok áttekintése:
+          - Svéd masszázs: Klasszikus, izomfeszültség oldás, vérkeringés javítás
+          - Relax masszázs: Stressz csökkentés, ellazulás, alvási problémák
+          - Aromaterápiás: Illóolajokkal, holisztikus megközelítés
+          - Talpmasszázs: Reflexológia, akik sokat állnak
+          - Köpölyözés: Mélyebb fájdalmak, sportolók, méregtelenítés
+          - TAPE: Sportolók, sérülések utáni támogatás
           `,
           tools: [{ functionDeclarations: [recommendServiceFunction] }],
         },
@@ -125,27 +123,23 @@ export const ChatInterface: React.FC = () => {
     const textToSend = overrideText || inputValue;
     if (!textToSend.trim() || !chatSession) return;
 
-    // Add user message
     const newMsg = { id: Date.now(), sender: 'user' as const, text: textToSend };
     setMessages(prev => [...prev, newMsg]);
     setInputValue('');
-    setCurrentSuggestions([]); // Hide suggestions while thinking
+    setCurrentSuggestions([]);
     setIsTyping(true);
 
     try {
       const response = await chatSession.sendMessage({ message: textToSend });
       setIsTyping(false);
 
-      // Check for tool calls
       const functionCalls = response.functionCalls;
 
       if (functionCalls && functionCalls.length > 0) {
-        // Handle recommendation tool
         const call = functionCalls[0];
         if (call.name === 'recommendService') {
           const { serviceName, reasoning } = call.args as any;
 
-          // Add recommendation message UI
           setMessages(prev => [...prev, {
             id: Date.now() + 1,
             sender: 'bot',
@@ -153,11 +147,9 @@ export const ChatInterface: React.FC = () => {
             serviceData: { name: serviceName, reason: reasoning }
           }]);
 
-          // After recommendation, offer to restart or book
-          setCurrentSuggestions(['Időpontfoglalás', 'Másik probléma', 'Újrakezdés']);
+          setCurrentSuggestions(['Időpontfoglalás', 'Másik kérdésem van', 'Újrakezdés']);
         }
       } else {
-        // Standard text response with Option parsing
         const rawText = response.text;
         const { cleanText, newSuggestions } = parseResponse(rawText);
 
@@ -170,8 +162,6 @@ export const ChatInterface: React.FC = () => {
         if (newSuggestions.length > 0) {
           setCurrentSuggestions(newSuggestions);
         } else {
-          // Fallback if AI forgets options, keep generic ones or clear
-          // But usually we want to keep conversation going
           setCurrentSuggestions([]);
         }
       }
@@ -182,48 +172,41 @@ export const ChatInterface: React.FC = () => {
       setMessages(prev => [...prev, {
         id: Date.now() + 1,
         sender: 'bot',
-        text: 'Elnézést, egy kis technikai hiba történt. Kérem próbálja újra később.'
+        text: 'Elnézést, egy kis technikai hiba történt. Kérem próbáld újra később.'
       }]);
       setCurrentSuggestions(DEFAULT_SUGGESTIONS);
     }
   };
 
-  const handleBookingClick = (serviceName: string) => {
-    // Navigate to booking page
-    navigate('/foglalas');
+  const handleBookingClick = () => {
+    window.open('https://bencemasszazsnyiregyhaza.booked4.us/public/book', '_blank');
   };
 
   const restartChat = () => {
     setMessages([{
       id: 1,
       sender: 'bot',
-      text: 'Üdvözlöm! Dr. Kondorosi Ildikó virtuális asszisztense vagyok. Segítek eligazodni kezeléseink között és megtalálni a tökéletes megoldást az Ön számára. Mi az a probléma, ami leginkább zavarja mostanában?'
+      text: 'Üdvözlöm! Bence Masszázs Szalon virtuális asszisztense vagyok. Segítek megtalálni a számodra ideális masszázst. Mi az, ami leginkább zavar mostanában – feszültség, fájdalom, vagy egyszerűen csak kell egy kis feltöltődés?'
     }]);
     setIsTyping(false);
 
-    // Re-initialize chat session to clear history
     const chat = ai.chats.create({
       model: 'gemini-3-flash-preview',
       config: {
-        systemInstruction: `You are the virtual assistant for Dr. Kondorosi Ildikó at Dunakanyar Esztétika. 
-          Your goal is to help users find the right aesthetic or dermatological service by asking 2-3 targeted diagnostic questions.
-          Speak Hungarian. Be polite, professional, yet friendly. 
-          Keep your responses concise (max 2-3 sentences).
+        systemInstruction: `Te a Bence Masszázs Szalon virtuális asszisztense vagy Nyíregyházán. 
+          A célod, hogy segíts a felhasználóknak megtalálni a számukra ideális masszázs kezelést.
+          Magyarul beszélj. Légy udvarias, professzionális, de barátságos. 
+          Tartsd a válaszaidat tömören.
 
-          IMPORTANT: The user has already been greeted. DO NOT introduce yourself again. DO NOT say "Üdvözlöm" or "Dr. Kondorosi Ildikó asszisztense vagyok". Start directly by addressing the user's input/problem.
+          FONTOS: A felhasználót már üdvözöltük. NE mutatkozz be újra.
           
-          IMPORTANT RULE FOR INTERACTION:
-          At the end of EVERY question you ask, you MUST provide 3-4 short, clickable options for the user to answer easily.
-          Format these options strictly like this at the very end of your message: 
-          [OPTIONS: Option 1 | Option 2 | Option 3]
+          Minden kérdésed végére adj 3-4 opciót:
+          [OPTIONS: Opció 1 | Opció 2 | Opció 3]
           
-          Here is the list of available services:
+          Szolgáltatások:
           ${JSON.stringify(FULL_SERVICES_DATA)}
 
-          Process:
-          1. Ask the user about their skin concerns. Provide [OPTIONS: ...]
-          2. Based on their answer, ask clarifying questions. Provide [OPTIONS: ...]
-          3. When identified, use 'recommendService'.
+          Ha azonosítottad a szolgáltatást, használd a 'recommendService' eszközt.
           `,
         tools: [{ functionDeclarations: [recommendServiceFunction] }],
       },
@@ -233,27 +216,27 @@ export const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-2xl shadow-primary-900/10 overflow-hidden border border-white/50 flex flex-col h-[500px] md:h-[600px] relative z-20 backdrop-blur-sm transition-all duration-300">
+    <div className="w-full max-w-md mx-auto bg-gray-900 rounded-3xl shadow-2xl shadow-black/50 overflow-hidden border border-gold-400/20 flex flex-col h-[500px] md:h-[600px] relative z-20 backdrop-blur-sm transition-all duration-300">
       {/* Premium Header */}
-      <div className="bg-white p-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+      <div className="bg-black p-4 border-b border-gold-400/20 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+            <div className="w-10 h-10 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center text-black shadow-lg shadow-gold-400/30">
               <Bot size={20} strokeWidth={1.5} />
             </div>
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-black rounded-full"></span>
           </div>
           <div>
-            <h3 className="font-heading font-bold text-gray-900 text-base leading-tight">AI Asszisztens</h3>
+            <h3 className="font-heading font-bold text-white text-base leading-tight">Masszázs Tanácsadó</h3>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-              <p className="text-gray-500 text-[10px] font-medium uppercase tracking-wide">Dr. Kondorosi Ildikó</p>
+              <p className="text-gold-400 text-[10px] font-medium uppercase tracking-wide">Bence Masszázs Szalon</p>
             </div>
           </div>
         </div>
         <button
           onClick={restartChat}
-          className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
+          className="p-2 text-gray-500 hover:text-gold-400 hover:bg-gold-400/10 rounded-full transition-colors"
           title="Beszélgetés újrakezdése"
         >
           <RefreshCw size={16} />
@@ -263,7 +246,7 @@ export const ChatInterface: React.FC = () => {
       {/* Messages Area */}
       <div
         ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-50/50 to-white scrollbar-thin scrollbar-thumb-gray-200"
+        className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-900 to-gray-950 scrollbar-thin scrollbar-thumb-gray-700"
       >
         {messages.map((msg) => (
           <div
@@ -272,33 +255,33 @@ export const ChatInterface: React.FC = () => {
           >
             {msg.isRecommendation ? (
               <div className="w-full max-w-[95%]">
-                <div className="bg-gradient-to-br from-white to-secondary-50 border border-secondary-100 rounded-2xl p-5 shadow-lg shadow-secondary-100/50">
-                  <div className="flex items-center gap-2 mb-3 text-secondary-600 font-bold uppercase text-xs tracking-wider">
-                    <Sparkles size={14} /> Ajánlott kezelés
+                <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gold-400/30 rounded-2xl p-5 shadow-lg">
+                  <div className="flex items-center gap-2 mb-3 text-gold-400 font-bold uppercase text-xs tracking-wider">
+                    <Sparkles size={14} /> Ajánlott masszázs
                   </div>
-                  <h4 className="text-xl font-heading font-bold text-gray-900 mb-2">
+                  <h4 className="text-xl font-heading font-bold text-white mb-2">
                     {msg.serviceData.name}
                   </h4>
-                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                  <p className="text-gray-400 text-sm mb-6 leading-relaxed">
                     {msg.serviceData.reason}
                   </p>
                   <button
-                    onClick={() => handleBookingClick(msg.serviceData.name)}
-                    className="w-full bg-primary-600 text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-600/20 transition-all transform hover:scale-[1.02]"
+                    onClick={handleBookingClick}
+                    className="w-full bg-gradient-to-r from-gold-400 to-gold-500 text-black py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:from-gold-500 hover:to-gold-600 hover:shadow-lg hover:shadow-gold-400/20 transition-all transform hover:scale-[1.02]"
                   >
                     <CalendarCheck size={18} />
-                    Ingyenes konzultáció foglalása
+                    Időpontfoglalás
                   </button>
-                  <p className="text-center text-xs text-gray-400 mt-3">
-                    Az időpontfoglalás kötelezettségmentes.
+                  <p className="text-center text-xs text-gray-500 mt-3">
+                    Online foglalás a booked4.us rendszeren
                   </p>
                 </div>
               </div>
             ) : (
               <div
                 className={`max-w-[85%] p-4 rounded-2xl text-[15px] leading-relaxed shadow-sm ${msg.sender === 'user'
-                    ? 'bg-primary-600 text-white rounded-br-none'
-                    : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none shadow-gray-200/50'
+                  ? 'bg-gradient-to-r from-gold-400 to-gold-500 text-black rounded-br-none'
+                  : 'bg-gray-800 text-gray-200 border border-gray-700 rounded-bl-none'
                   }`}
               >
                 {msg.text}
@@ -309,27 +292,27 @@ export const ChatInterface: React.FC = () => {
 
         {isTyping && (
           <div className="flex justify-start w-full animate-fade-in">
-            <div className="flex items-center gap-2 bg-white border border-gray-100 px-4 py-3 rounded-2xl rounded-bl-none shadow-sm">
+            <div className="flex items-center gap-2 bg-gray-800 border border-gray-700 px-4 py-3 rounded-2xl rounded-bl-none shadow-sm">
               <span className="text-xs text-gray-400 font-medium mr-1">Gondolkodik...</span>
               <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-bounce"></span>
-                <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-bounce delay-75"></span>
-                <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-bounce delay-150"></span>
+                <span className="w-1.5 h-1.5 bg-gold-400 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-gold-400 rounded-full animate-bounce delay-75"></span>
+                <span className="w-1.5 h-1.5 bg-gold-400 rounded-full animate-bounce delay-150"></span>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Suggestion Chips Area - Compact, Flat, No Header */}
+      {/* Suggestion Chips Area */}
       {currentSuggestions.length > 0 && (
-        <div className="px-4 pb-2 bg-white border-t border-gray-50 pt-2 shrink-0">
+        <div className="px-4 pb-2 bg-gray-900 border-t border-gray-800 pt-2 shrink-0">
           <div className="grid grid-cols-2 gap-2">
             {currentSuggestions.map((chip, idx) => (
               <button
                 key={`${chip}-${idx}`}
                 onClick={() => handleSend(chip)}
-                className="text-center whitespace-normal text-xs font-bold bg-white text-gray-700 px-2 py-2 rounded-lg border border-gray-200 hover:border-primary-400 hover:bg-primary-50 hover:text-primary-700 transition-all shadow-sm active:scale-95 flex items-center justify-center gap-1 group min-h-[40px]"
+                className="text-center whitespace-normal text-xs font-bold bg-gray-800 text-gray-300 px-2 py-2 rounded-lg border border-gray-700 hover:border-gold-400 hover:bg-gold-400/10 hover:text-gold-400 transition-all shadow-sm active:scale-95 flex items-center justify-center gap-1 group min-h-[40px]"
               >
                 {chip}
               </button>
@@ -339,13 +322,13 @@ export const ChatInterface: React.FC = () => {
       )}
 
       {/* Input Area */}
-      <div className="p-3 bg-white border-t border-gray-100 shrink-0">
+      <div className="p-3 bg-black border-t border-gray-800 shrink-0">
         <div className="relative flex items-center gap-2 group">
           <input
             id="chatbot-input"
             type="text"
-            placeholder="Írjon üzenetet..."
-            className="w-full bg-gray-50 text-gray-700 text-sm rounded-xl py-3 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:bg-white transition-all border border-gray-100 focus:border-primary-200"
+            placeholder="Írj üzenetet..."
+            className="w-full bg-gray-800 text-gray-200 text-sm rounded-xl py-3 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-gold-400/30 focus:bg-gray-700 transition-all border border-gray-700 focus:border-gold-400/50 placeholder-gray-500"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -353,7 +336,7 @@ export const ChatInterface: React.FC = () => {
           <button
             onClick={() => handleSend()}
             disabled={!inputValue.trim()}
-            className="absolute right-2 p-1.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:hover:bg-primary-600 transition-all shadow-md hover:shadow-lg"
+            className="absolute right-2 p-1.5 bg-gold-400 text-black rounded-lg hover:bg-gold-500 disabled:opacity-50 disabled:hover:bg-gold-400 transition-all shadow-md hover:shadow-lg"
           >
             <Send size={16} />
           </button>
