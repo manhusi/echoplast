@@ -592,19 +592,27 @@ export function BookingWidget({ initialService }: BookingWidgetProps) {
                                 </div>
 
                                 <div className="booking-widget__field">
-                                    <label className="booking-widget__label">Email</label>
+                                    <label className="booking-widget__label">
+                                        Email <span className="booking-widget__required">*</span>
+                                    </label>
                                     <input
                                         type="email"
                                         name="email"
-                                        className="booking-widget__input"
+                                        className={`booking-widget__input ${formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ? 'border-red-500' : ''}`}
                                         placeholder="pelda@email.com"
                                         value={formData.email}
                                         onChange={handleFormChange}
+                                        required
                                     />
+                                    {formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
+                                        <p className="text-xs text-red-500 mt-1">Kérjük, érvényes email címet adjon meg.</p>
+                                    )}
                                 </div>
 
                                 <div className="booking-widget__field">
-                                    <label className="booking-widget__label">Telefonszám</label>
+                                    <label className="booking-widget__label">
+                                        Telefonszám <span className="booking-widget__required">*</span>
+                                    </label>
                                     <input
                                         type="tel"
                                         name="phone"
@@ -612,6 +620,7 @@ export function BookingWidget({ initialService }: BookingWidgetProps) {
                                         placeholder="+36 30 123 4567"
                                         value={formData.phone}
                                         onChange={handleFormChange}
+                                        required
                                     />
                                 </div>
 
@@ -637,8 +646,14 @@ export function BookingWidget({ initialService }: BookingWidgetProps) {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="booking-widget__button booking-widget__button--primary"
-                                        disabled={!formData.name || submitting}
+                                        className="booking-widget__button booking-widget__button--cta"
+                                        disabled={
+                                            !formData.name ||
+                                            !formData.email ||
+                                            !formData.phone ||
+                                            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ||
+                                            submitting
+                                        }
                                     >
                                         {submitting ? (
                                             <>
@@ -646,7 +661,7 @@ export function BookingWidget({ initialService }: BookingWidgetProps) {
                                                 Küldés...
                                             </>
                                         ) : (
-                                            'Foglalás'
+                                            'FOGLALÁS'
                                         )}
                                     </button>
                                 </div>

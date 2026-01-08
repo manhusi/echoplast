@@ -407,6 +407,30 @@
   border: 1px solid var(--bw-border);
 }
 
+.booking-widget__button--cta {
+  background: var(--bw-primary);
+  color: var(--bw-bg-dark);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+}
+
+.booking-widget__button--cta:hover:not(:disabled) {
+  background: #f0c350;
+  /* Lighter gold for hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+}
+
+.booking-widget__button--cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  background: var(--bw-bg-hover);
+  color: var(--bw-text-muted);
+}
+
 .booking-widget__button--secondary:hover {
   background: var(--bw-bg-dark);
   border-color: var(--bw-primary);
