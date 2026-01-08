@@ -1,29 +1,59 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Bot, Sparkles, RefreshCw, CalendarCheck } from 'lucide-react';
-import { GoogleGenAI, FunctionDeclaration, Type } from "@google/genai";
 import { FULL_SERVICES_DATA } from '../constants';
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-
-// Define the tool for recommending a service
-const recommendServiceFunction: FunctionDeclaration = {
+// Define the tool for recommending a service (JSON Schema format for API)
+const recommendServiceFunction = {
   name: 'recommendService',
+  description: 'Recommend a specific massage service to the user and explain why.',
   parameters: {
-    type: Type.OBJECT,
-    description: 'Recommend a specific massage service to the user and explain why.',
+    type: 'OBJECT',
     properties: {
       serviceName: {
-        type: Type.STRING,
+        type: 'STRING',
         description: 'The exact name of the service from the available list.',
       },
       reasoning: {
-        type: Type.STRING,
+        type: 'STRING',
         description: 'A brief, friendly explanation of why this service fits the user needs (in Hungarian).',
       },
     },
     required: ['serviceName', 'reasoning'],
   },
 };
+
+const SYSTEM_PROMPT = `Te a Bence Masszázs Szalon virtuális asszisztense vagy Nyíregyházán. 
+A célod, hogy segíts a felhasználóknak megtalálni a számukra ideális masszázs kezelést 2-3 célzott kérdés feltevésével.
+Magyarul beszélj. Légy udvarias, professzionális, de barátságos. 
+Tartsd a válaszaidat tömören (max 2-3 mondat).
+
+FONTOS: A felhasználót már üdvözöltük. NE mutatkozz be újra. NE mondd, hogy "Üdvözlöm" vagy "Bence Masszázs asszisztense vagyok". Kezdj egyből a felhasználó problémájával/inputjával.
+
+FONTOS SZABÁLY:
+Minden kérdésed végére adj 3-4 rövid, kattintható opciót.
+Formázd így a végén: 
+[OPTIONS: Opció 1 | Opció 2 | Opció 3]
+
+Példa: 
+"Melyik testrész fáj a legjobban?"
+[OPTIONS: Nyak/Váll | Hát | Derék | Láb]
+
+Elérhető szolgáltatások:
+${JSON.stringify(FULL_SERVICES_DATA)}
+
+Folyamat:
+1. Kérdezd meg milyen problémája van (feszültség, fájdalom, stressz, sport). Add meg [OPTIONS: ...]
+2. Kérdezz pontosító kérdéseket (melyik testrész, mennyi ideje, milyen erősségű). Add meg [OPTIONS: ...]
+3. Ha azonosítottad a szolgáltatást, használd a 'recommendService' eszközt.
+
+Masszázs típusok áttekintése:
+- Svéd masszázs: Klasszikus, izomfeszültség oldás, vérkeringés javítás
+- Relax masszázs: Stressz csökkentés, ellazulás, alvási problémák
+- Aromaterápiás: Illóolajokkal, holisztikus megközelítés
+- Talpmasszázs: Reflexológia, akik sokat állnak
+- Köpölyözés: Mélyebb fájdalmak, sportolók, méregtelenítés
+- TAPE: Sportolók, sérülések utáni támogatás
+`;
 
 const DEFAULT_SUGGESTIONS = ['Izomfeszültség', 'Stressz & Relaxáció', 'Sport utáni regeneráció', 'Tanácsot kérek'];
 
@@ -38,7 +68,6 @@ export const ChatInterface: React.FC = () => {
 
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [chatSession, setChatSession] = useState<any>(null);
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(DEFAULT_SUGGESTIONS);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -73,84 +102,69 @@ export const ChatInterface: React.FC = () => {
     return { cleanText, newSuggestions };
   };
 
-  useEffect(() => {
-    const initChat = async () => {
-      const chat = ai.chats.create({
-        model: 'gemini-3-flash-preview',
-        config: {
-          systemInstruction: `Te a Bence Masszázs Szalon virtuális asszisztense vagy Nyíregyházán. 
-          A célod, hogy segíts a felhasználóknak megtalálni a számukra ideális masszázs kezelést 2-3 célzott kérdés feltevésével.
-          Magyarul beszélj. Légy udvarias, professzionális, de barátságos. 
-          Tartsd a válaszaidat tömören (max 2-3 mondat).
-
-          FONTOS: A felhasználót már üdvözöltük. NE mutatkozz be újra. NE mondd, hogy "Üdvözlöm" vagy "Bence Masszázs asszisztense vagyok". Kezdj egyből a felhasználó problémájával/inputjával.
-          
-          FONTOS SZABÁLY:
-          Minden kérdésed végére adj 3-4 rövid, kattintható opciót.
-          Formázd így a végén: 
-          [OPTIONS: Opció 1 | Opció 2 | Opció 3]
-
-          Példa: 
-          "Melyik testrész fáj a legjobban?"
-          [OPTIONS: Nyak/Váll | Hát | Derék | Láb]
-          
-          Elérhető szolgáltatások:
-          ${JSON.stringify(FULL_SERVICES_DATA)}
-
-          Folyamat:
-          1. Kérdezd meg milyen problémája van (feszültség, fájdalom, stressz, sport). Add meg [OPTIONS: ...]
-          2. Kérdezz pontosító kérdéseket (melyik testrész, mennyi ideje, milyen erősségű). Add meg [OPTIONS: ...]
-          3. Ha azonosítottad a szolgáltatást, használd a 'recommendService' eszközt.
-          
-          Masszázs típusok áttekintése:
-          - Svéd masszázs: Klasszikus, izomfeszültség oldás, vérkeringés javítás
-          - Relax masszázs: Stressz csökkentés, ellazulás, alvási problémák
-          - Aromaterápiás: Illóolajokkal, holisztikus megközelítés
-          - Talpmasszázs: Reflexológia, akik sokat állnak
-          - Köpölyözés: Mélyebb fájdalmak, sportolók, méregtelenítés
-          - TAPE: Sportolók, sérülések utáni támogatás
-          `,
-          tools: [{ functionDeclarations: [recommendServiceFunction] }],
-        },
-      });
-      setChatSession(chat);
-    };
-
-    initChat();
-  }, []);
-
   const handleSend = async (overrideText?: string) => {
     const textToSend = overrideText || inputValue;
-    if (!textToSend.trim() || !chatSession) return;
+    if (!textToSend.trim()) return;
 
     const newMsg = { id: Date.now(), sender: 'user' as const, text: textToSend };
+    // Create optimistic update
     setMessages(prev => [...prev, newMsg]);
     setInputValue('');
     setCurrentSuggestions([]);
     setIsTyping(true);
 
     try {
-      const response = await chatSession.sendMessage({ message: textToSend });
+      // Prepare history for API (excluding the current new message which we'll add now, and filtering out UI-only messages)
+      const history = messages
+        .filter(m => m.text && !m.isRecommendation) // Only text messages, skip recommendation cards
+        .map(m => ({
+          role: m.sender === 'bot' ? 'model' : 'user',
+          parts: [{ text: m.text || '' }]
+        }));
+
+      // Add the new user message
+      history.push({ role: 'user', parts: [{ text: textToSend }] });
+
+      const response = await fetch('/.netlify/functions/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: history,
+          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+          tools: [{ functionDeclarations: [recommendServiceFunction] }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
       setIsTyping(false);
 
-      const functionCalls = response.functionCalls;
+      // Parse Gemini Response
+      // API response structure typically: candidates[0].content.parts[0]... or functionCalls
+      const candidate = data.candidates?.[0];
+      const modelPart = candidate?.content?.parts?.[0];
 
-      if (functionCalls && functionCalls.length > 0) {
-        const call = functionCalls[0];
+      if (!modelPart) {
+        throw new Error("No content received");
+      }
+
+      if (modelPart.functionCall) {
+        const call = modelPart.functionCall;
         if (call.name === 'recommendService') {
-          const { serviceName, reasoning } = call.args as any;
-
+          const args = call.args;
           setMessages(prev => [...prev, {
             id: Date.now() + 1,
             sender: 'bot',
             isRecommendation: true,
-            serviceData: { name: serviceName, reason: reasoning }
+            serviceData: { name: args.serviceName, reason: args.reasoning }
           }]);
-
           setCurrentSuggestions(['Időpontfoglalás', 'Másik kérdésem van', 'Újrakezdés']);
         }
-      } else {
-        const rawText = response.text;
+      } else if (modelPart.text) {
+        const rawText = modelPart.text;
         const { cleanText, newSuggestions } = parseResponse(rawText);
 
         setMessages(prev => [...prev, {
@@ -189,29 +203,6 @@ export const ChatInterface: React.FC = () => {
       text: 'Üdvözlöm! Bence Masszázs Szalon virtuális asszisztense vagyok. Segítek megtalálni a számodra ideális masszázst. Mi az, ami leginkább zavar mostanában – feszültség, fájdalom, vagy egyszerűen csak kell egy kis feltöltődés?'
     }]);
     setIsTyping(false);
-
-    const chat = ai.chats.create({
-      model: 'gemini-3-flash-preview',
-      config: {
-        systemInstruction: `Te a Bence Masszázs Szalon virtuális asszisztense vagy Nyíregyházán. 
-          A célod, hogy segíts a felhasználóknak megtalálni a számukra ideális masszázs kezelést.
-          Magyarul beszélj. Légy udvarias, professzionális, de barátságos. 
-          Tartsd a válaszaidat tömören.
-
-          FONTOS: A felhasználót már üdvözöltük. NE mutatkozz be újra.
-          
-          Minden kérdésed végére adj 3-4 opciót:
-          [OPTIONS: Opció 1 | Opció 2 | Opció 3]
-          
-          Szolgáltatások:
-          ${JSON.stringify(FULL_SERVICES_DATA)}
-
-          Ha azonosítottad a szolgáltatást, használd a 'recommendService' eszközt.
-          `,
-        tools: [{ functionDeclarations: [recommendServiceFunction] }],
-      },
-    });
-    setChatSession(chat);
     setCurrentSuggestions(DEFAULT_SUGGESTIONS);
   };
 
