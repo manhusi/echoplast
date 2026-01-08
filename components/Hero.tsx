@@ -63,14 +63,14 @@ export const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
               <button
                 onClick={() => document.getElementById('chatbot-input')?.focus()}
-                className="bg-gradient-to-r from-gold-400 to-gold-500 text-black px-8 py-4 rounded-2xl font-bold font-heading shadow-xl shadow-gold-400/20 hover:from-gold-500 hover:to-gold-600 hover:scale-[1.02] transition-all transform flex items-center justify-center gap-3 group"
+                className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold font-heading border border-gold-400/30 text-gold-400 hover:bg-gold-400/10 hover:border-gold-400 transition-all duration-300"
               >
                 Segíts választani
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <a
                 href="/foglalas"
-                className="group flex items-center justify-center gap-3 bg-gold-400 text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gold-500 transition-all duration-300 shadow-lg shadow-gold-400/30 hover:shadow-gold-400/50 hover:-translate-y-0.5"
+                className="group flex items-center justify-center gap-3 bg-gradient-to-r from-gold-400 to-gold-500 text-black px-8 py-4 rounded-2xl font-bold font-heading shadow-xl shadow-gold-400/20 hover:from-gold-500 hover:to-gold-600 hover:scale-[1.02] transition-all transform"
               >
                 Időpontfoglalás
               </a>
