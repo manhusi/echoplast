@@ -120,7 +120,7 @@ export const LANDING_DATA: LandingData = {
     "phone_number": "",
     "address": "4400 Nyíregyháza, Szent István utca 2.",
     "email_address": "",
-    "opening_hours": "Hétfőtől szombatig, előzetes bejelentkezéssel"
+    "opening_hours": "Hétfőtől vasárnapig, előzetes bejelentkezéssel"
   },
   "trust_signals": [
     {

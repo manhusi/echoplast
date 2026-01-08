@@ -29,16 +29,14 @@ export const PrivacyPolicy: React.FC = () => {
                     <section className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8">
                         <div className="flex items-center gap-3 mb-6">
                             <Shield className="text-gold-400" size={28} />
-                            <h2 className="text-2xl font-bold text-white">1. Az adatkezelő adatai</h2>
+                            <h2 className="text-2xl font-bold text-white">1. Adatvédelem</h2>
                         </div>
                         <div className="space-y-4 text-gray-300 leading-relaxed">
-                            <p>
-                                Jelen tájékoztató célja, hogy rögzítse a <strong>Bence Masszázs</strong> (székhely: 4400 Nyíregyháza, Szent István utca 2.) által alkalmazott adatvédelmi és adatkezelési elveket.
-                            </p>
                             <ul className="list-disc pl-6 space-y-2 text-gray-400">
-                                <li><strong>Név:</strong> Bence Masszázs</li>
-                                <li><strong>Cím:</strong> 4400 Nyíregyháza, Szent István utca 2.</li>
-                                <li><strong>Tevékenység:</strong> Fizikai közérzetjavító szolgáltatás</li>
+                                <li><strong>Székhely:</strong> 4484 Ibrány Tisza utca 107</li>
+                                <li><strong>Telephely:</strong> 4400 Nyíregyháza Szent István utca 2</li>
+                                <li><strong>Üzemeltető:</strong> Kaszás Bence Attila E.V</li>
+                                <li><strong>Fantázia név:</strong> Bence Masszázs szalon</li>
                             </ul>
                         </div>
                     </section>
