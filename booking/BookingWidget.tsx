@@ -467,7 +467,7 @@ export function BookingWidget({ initialService }: BookingWidgetProps) {
                             {/* Selected Service Summary */}
                             <div className="booking-widget__selection-summary">
                                 <span className="booking-widget__summary-text">
-                                    🎯 {selectedService}
+                                    🎯 {selectedServiceName}
                                 </span>
                             </div>
 
@@ -567,7 +567,7 @@ export function BookingWidget({ initialService }: BookingWidgetProps) {
                             {/* Summary */}
                             <div className="booking-widget__selection-summary">
                                 <span className="booking-widget__summary-text">
-                                    🎯 {selectedService} • {selectedDate && formatShortDate(selectedDate)}
+                                    🎯 {selectedServiceName} • {selectedDate && formatShortDate(selectedDate)}
                                     {selectedHour && selectedMinute && ` • ${selectedHour}:${selectedMinute}`}
                                 </span>
                             </div>
@@ -643,7 +643,7 @@ export function BookingWidget({ initialService }: BookingWidgetProps) {
                             {/* Selected Summary */}
                             <div className="booking-widget__selection-summary">
                                 <span className="booking-widget__summary-text">
-                                    🎯 {selectedService} • {selectedDate && formatShortDate(selectedDate)} • {selectedHour}:{selectedMinute}
+                                    🎯 {selectedServiceName} • {selectedDate && formatShortDate(selectedDate)} • {selectedHour}:{selectedMinute}
                                 </span>
                             </div>
 
