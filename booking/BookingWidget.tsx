@@ -29,14 +29,18 @@ function formatShortDate(dateStr: string): string {
     return `${month} ${day}.`;
 }
 
-export function BookingWidget() {
+interface BookingWidgetProps {
+    initialService?: string | null;
+}
+
+export function BookingWidget({ initialService }: BookingWidgetProps) {
     const [step, setStep] = useState<BookingStep>('service');
     const [availability, setAvailability] = useState<AvailabilityResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [selectedService, setSelectedService] = useState<string | null>(null);
+    const [selectedService, setSelectedService] = useState<string | null>(initialService || null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedHour, setSelectedHour] = useState<string | null>(null);
     const [selectedMinute, setSelectedMinute] = useState<string | null>(null);
@@ -60,8 +64,11 @@ export function BookingWidget() {
                 const data = await fetchAvailability();
                 setAvailability(data);
 
-                // Auto-select service and skip to date if only one service
-                if (data.service_id.length === 1) {
+                // Auto-select service if provided via prop OR if only one service exists
+                if (initialService) {
+                    setSelectedService(initialService);
+                    setStep('date');
+                } else if (data.service_id.length === 1) {
                     setSelectedService(data.service_id[0]);
                     setStep('date');
                 }
@@ -73,7 +80,7 @@ export function BookingWidget() {
         };
 
         loadAvailability();
-    }, []);
+    }, [initialService]); // Add initialService to dependency array
 
     // Get all available services
     const allServices = useMemo(() => {

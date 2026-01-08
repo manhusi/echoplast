@@ -1,10 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock, MapPin, Star } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, MapPin, Star, Sparkles, Bot } from 'lucide-react';
 import { BookingWidget } from '../booking/BookingWidget';
 import '../booking/styles.css';
 
+// Parse search params
 export const BookingPage: React.FC = () => {
+  const [searchParams] = React.useMemo(() => {
+    // Basic polyfill/usage if useSearchParams from react-router aren't available setup in this file context,
+    // assuming standard window.location parsing or we could use 'useLocation' hook.
+    // Since we only import Link from react-router-dom, let's use window.location for simplicity or add the hook.
+    // Actually, good practice to use useLocation.
+    return [new URLSearchParams(window.location.search)];
+  }, []);
+
+  const recommendedService = searchParams.get('service');
+  const recommendationReason = searchParams.get('reason');
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black font-body">
       {/* Background Decor */}
@@ -25,6 +37,29 @@ export const BookingPage: React.FC = () => {
 
       {/* Main Content */}
       <main className="relative z-10 container mx-auto px-4 pb-16">
+        {/* Recommendation Banner */}
+        {recommendedService && recommendationReason && (
+          <div className="max-w-3xl mx-auto mb-8 animate-fade-in-up">
+            <div className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gold-400/40 rounded-2xl p-6 shadow-xl shadow-gold-400/10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10 text-gold-400">
+                <Sparkles size={100} />
+              </div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 text-gold-400 font-bold uppercase text-xs tracking-wider mb-2">
+                  <Bot size={16} />
+                  <span>Személyre szabott ajánlás</span>
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-white mb-2">
+                  Ezt választottuk neked: <span className="text-gold-400">{recommendedService}</span>
+                </h3>
+                <p className="text-gray-300 leading-relaxed max-w-2xl">
+                  {recommendationReason}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-gold-400/10 text-gold-400 px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-gold-400/20">
@@ -39,31 +74,39 @@ export const BookingPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Trust badges */}
-        <div className="flex flex-wrap justify-center gap-6 mb-10">
-          <div className="flex items-center gap-2 text-gray-400 text-sm">
-            <div className="w-8 h-8 bg-gold-400/10 rounded-full flex items-center justify-center border border-gold-400/20">
-              <Clock size={16} className="text-gold-400" />
+        {/* Location Card  */}
+        <div className="max-w-lg mx-auto mb-8">
+          <div className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 flex items-center justify-between shadow-lg hover:border-gold-400/30 transition-all group">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700 group-hover:border-gold-400/50 group-hover:bg-gold-400/10 transition-all">
+                <MapPin size={24} className="text-gray-400 group-hover:text-gold-400 transition-colors" />
+              </div>
+              <div>
+                <p className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1">Helyszín</p>
+                <p className="text-white text-lg font-bold font-heading">
+                  4400 Nyíregyháza
+                </p>
+                <p className="text-gray-300">
+                  Szent István utca 2.
+                </p>
+              </div>
             </div>
-            <span>Rugalmas időpontok</span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-400 text-sm">
-            <div className="w-8 h-8 bg-gold-400/10 rounded-full flex items-center justify-center border border-gold-400/20">
-              <Star size={16} className="text-gold-400" />
-            </div>
-            <span>5 csillagos értékelés</span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-400 text-sm">
-            <div className="w-8 h-8 bg-gold-400/10 rounded-full flex items-center justify-center border border-gold-400/20">
-              <MapPin size={16} className="text-gold-400" />
-            </div>
-            <span>Nyíregyháza központ</span>
+
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Nyíregyháza+Szent+István+utca+2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-2 text-sm font-bold text-gold-400 hover:text-white transition-colors bg-gold-400/10 hover:bg-gold-400/20 px-4 py-2 rounded-lg"
+            >
+              Térkép
+              <ArrowLeft className="rotate-180" size={14} />
+            </a>
           </div>
         </div>
 
         {/* Booking Widget Container */}
         <div className="max-w-lg mx-auto">
-          <BookingWidget />
+          <BookingWidget initialService={recommendedService} />
         </div>
 
         {/* Footer note */}
@@ -74,5 +117,6 @@ export const BookingPage: React.FC = () => {
     </div>
   );
 };
+
 
 export default BookingPage;
