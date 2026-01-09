@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { ArrowLeft, Shield, Lock, Eye, FileText } from 'lucide-react';
+import { LANDING_DATA } from '../constants';
 
 export const PrivacyPolicy: React.FC = () => {
     useEffect(() => {
@@ -34,10 +35,10 @@ export const PrivacyPolicy: React.FC = () => {
                         <div className="space-y-4 text-slate-600 leading-relaxed">
                             <ul className="list-disc pl-6 space-y-2">
                                 <li><strong>Név:</strong> ECHO Plasztikai Sebészet</li>
-                                <li><strong>Cím:</strong> Debrecen, Kossuth u. 56.</li>
+                                <li><strong>Cím:</strong> {LANDING_DATA.contact_details.address}</li>
                                 <li><strong>Vezető orvos:</strong> Dr. Péter Zoltán</li>
-                                <li><strong>Telefon:</strong> +36/20 976-3574</li>
-                                <li><strong>E-mail:</strong> peterz@dote.hu</li>
+                                <li><strong>Telefon:</strong> {LANDING_DATA.contact_details.phone_number}</li>
+                                <li><strong>E-mail:</strong> {LANDING_DATA.contact_details.email_address}</li>
                                 <li><strong>ÁNTSZ engedélyszám:</strong> 060060274</li>
                             </ul>
                         </div>

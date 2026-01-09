@@ -144,8 +144,8 @@ export const LANDING_DATA: LandingData = {
   ],
   pricing_structures: [],
   contact_details: {
-    phone_number: "+36/20 976-3574",
-    address: "Debrecen, Kossuth u. 56.",
+    phone_number: "06 20 976 3574",
+    address: "Debrecen, Bay Zoltán u., 4032",
     email_address: "peterz@dote.hu",
     opening_hours: "Előzetes bejelentkezéssel"
   },
