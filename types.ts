@@ -3,6 +3,30 @@ export interface ServiceCategory {
   description: string;
 }
 
+export interface PlasticService {
+  service_name: string;
+  description: string;
+  full_description: string;
+  citation: string;
+}
+
+export interface DoctorCredentials {
+  name: string;
+  title: string;
+  specialty: string;
+  experience_since: number;
+  education: string[];
+  international_training: string[];
+  specializations: string[];
+  publications: string;
+}
+
+export interface TrustElement {
+  icon: string;
+  value: string;
+  subtitle: string;
+}
+
 export interface Testimonial {
   type: string;
   content: string;
@@ -25,9 +49,9 @@ export interface USP {
 
 export interface LandingData {
   service_categories: ServiceCategory[];
-  treatment_benefits: any[]; // Kept generic as not strictly used in current view
+  treatment_benefits: any[];
   unique_selling_propositions: USP[];
-  pricing_structures: any[]; // Pricing not needed on landing as per instructions
+  pricing_structures: any[];
   contact_details: ContactDetails;
   trust_signals: Testimonial[];
 }

@@ -1,214 +1,176 @@
 import { LandingData } from './types';
 
-export const FULL_SERVICES_DATA = {
-  "bencemasszazsnyiregyhaza_massage_services": [
-    {
-      "service_name": "Svéd Masszázs 30 perces",
-      "detailed_description": "A svéd masszázs egy klasszikus masszázstechnika, amely öt alapvető mozdulatot alkalmaz: simítást, gyúrást, dörzsölést, ütögetést és rázást. Ez a technika segít a vérkeringés fokozásában, az izomfeszültség oldásában, és elősegíti a test relaxációját. Ajánlott azoknak, akik stresszes életmódot folytatnak, izomlázban vagy izommerevségben szenvednek, vagy egyszerűen csak általános jólétüket szeretnék fokozni. Adott testrész fér bele ebbe az idő intervalumba!",
-      "duration": "30 perc",
-      "pricing": "5500 Ft"
-    },
-    {
-      "service_name": "Svéd Masszázs 60 perces",
-      "detailed_description": "A svéd masszázs egy klasszikus masszázstechnika, amely öt alapvető mozdulatot alkalmaz: simítást, gyúrást, dörzsölést, ütögetést és rázást. Ez a technika segít a vérkeringés fokozásában, az izomfeszültség oldásában, és elősegíti a test relaxációját. Ajánlott azoknak, akik stresszes életmódot folytatnak, izomlázban vagy izommerevségben szenvednek, vagy egyszerűen csak általános jólétüket szeretnék fokozni. Teljes testmasszázs",
-      "duration": "60 perc",
-      "pricing": "7000 Ft"
-    },
-    {
-      "service_name": "Svéd Masszázs 90 perces",
-      "detailed_description": "A svéd masszázs egy klasszikus masszázstechnika, amely öt alapvető mozdulatot alkalmaz: simítást, gyúrást, dörzsölést, ütögetést és rázást. Ez a technika segít a vérkeringés fokozásában, az izomfeszültség oldásában, és elősegíti a test relaxációját. Ajánlott azoknak, akik stresszes életmódot folytatnak, izomlázban vagy izommerevségben szenvednek, vagy egyszerűen csak általános jólétüket szeretnék fokozni. Full teljes testmasszázs",
-      "duration": "90 perc",
-      "pricing": "9500 Ft"
-    },
-    {
-      "service_name": "Relax Masszázs 30 perces",
-      "detailed_description": "A relax masszázs célja a teljes test és elme ellazítása. Lágy, nyugtató mozdulatokkal segít csökkenteni a stresszt, oldja a feszültséget, és nyugodt, kiegyensúlyozott állapotot teremt. Ez a masszázstípus kifejezetten alkalmas azoknak, akik mentális kimerültséget tapasztalnak, alvási problémákkal küzdenek, vagy egyszerűen szeretnének egy nyugodt, pihentető élményt. Adott testrész masszázsa",
-      "duration": "30 perc",
-      "pricing": "5500 Ft"
-    },
-    {
-      "service_name": "Relax Masszázs 60 perces",
-      "detailed_description": "A relax masszázs célja a teljes test és elme ellazítása. Lágy, nyugtató mozdulatokkal segít csökkenteni a stresszt, oldja a feszültséget, és nyugodt, kiegyensúlyozott állapotot teremt. Ez a masszázstípus kifejezetten alkalmas azoknak, akik mentális kimerültséget tapasztalnak, alvási problémákkal küzdenek, vagy egyszerűen szeretnének egy nyugodt, pihentető élményt. Teljes testmasszázs",
-      "duration": "60 perc",
-      "pricing": "7000 Ft"
-    },
-    {
-      "service_name": "Relax Masszázs 90 perces",
-      "detailed_description": "A relax masszázs célja a teljes test és elme ellazítása. Lágy, nyugtató mozdulatokkal segít csökkenteni a stresszt, oldja a feszültséget, és nyugodt, kiegyensúlyozott állapotot teremt. Ez a masszázstípus kifejezetten alkalmas azoknak, akik mentális kimerültséget tapasztalnak, alvási problémákkal küzdenek, vagy egyszerűen szeretnének egy nyugodt, pihentető élményt. Full teljes testmasszázs",
-      "duration": "90 perc",
-      "pricing": "9500 Ft"
-    },
-    {
-      "service_name": "Talp Masszázs 20 perces",
-      "detailed_description": "A talpmasszázs a lábak specifikus pontjainak stimulálására összpontosít. A reflexológia elvei alapján a talpon található reflexzónák stimulálása pozitívan hat az egész szervezetre. Segít javítani a vérkeringést a lábakban, csökkenti a duzzanatot, oldja a fáradtságot, és általános jólétet teremt. Ajánlott azoknak, akik sokat állnak vagy járnak, nehéz lábérzéssel küzdenek, vagy általános relaxációt keresnek.",
-      "duration": "20 perc",
-      "pricing": "3000 Ft"
-    },
-    {
-      "service_name": "Talp Masszázs 30 perces",
-      "detailed_description": "A talpmasszázs a lábak specifikus pontjainak stimulálására összpontosít. A reflexológia elvei alapján a talpon található reflexzónák stimulálása pozitívan hat az egész szervezetre. Segít javítani a vérkeringést a lábakban, csökkenti a duzzanatot, oldja a fáradtságot, és általános jólétet teremt. Ajánlott azoknak, akik sokat állnak vagy járnak, nehéz lábérzéssel küzdenek, vagy általános relaxációt keresnek.",
-      "duration": "30 perc",
-      "pricing": "4500 Ft"
-    },
-    {
-      "service_name": "Aromaterápiás Masszázs 30 perces",
-      "detailed_description": "Az aromaterápiás masszázs ötvözi a klasszikus masszázstechnikákat az illóolajok terápiás hatásaival. A különböző illóolajok specifikus hatásokat fejtenek ki: nyugtatnak, energizálnak, vagy gyógyítanak. Ez a masszázstípus kiválóan alkalmas a stressz csökkentésére, a hangulat javítására, az immunrendszer erősítésére, és az általános jólét fokozására. Ajánlott azoknak, akik holisztikus megközelítést keresnek, érzelmi kiegyensúlyozottságra vágynak, vagy természetes terápiákat részesítenek előnyben. Adott testrész masszázsa",
-      "duration": "30 perc",
-      "pricing": "5500 Ft"
-    },
-    {
-      "service_name": "Aromaterápiás Masszázs 60 perces",
-      "detailed_description": "Az aromaterápiás masszázs ötvözi a klasszikus masszázstechnikákat az illóolajok terápiás hatásaival. A különböző illóolajok specifikus hatásokat fejtenek ki: nyugtatnak, energizálnak, vagy gyógyítanak. Ez a masszázstípus kiválóan alkalmas a stressz csökkentésére, a hangulat javítására, az immunrendszer erősítésére, és az általános jólét fokozására. Ajánlott azoknak, akik holisztikus megközelítést keresnek, érzelmi kiegyensúlyozottságra vágynak, vagy természetes terápiákat részesítenek előnyben. Teljes testmasszázs",
-      "duration": "60 perc",
-      "pricing": "7000 Ft"
-    },
-    {
-      "service_name": "Aromaterápiás Masszázs 90 perces",
-      "detailed_description": "Az aromaterápiás masszázs ötvözi a klasszikus masszázstechnikákat az illóolajok terápiás hatásaival. A különböző illóolajok specifikus hatásokat fejtenek ki: nyugtatnak, energizálnak, vagy gyógyítanak. Ez a masszázstípus kiválóan alkalmas a stressz csökkentésére, a hangulat javítására, az immunrendszer erősítésére, és az általános jólét fokozására. Ajánlott azoknak, akik holisztikus megközelítést keresnek, érzelmi kiegyensúlyozottságra vágynak, vagy természetes terápiákat részesítenek előnyben. Full teljes testmasszázs",
-      "duration": "90 perc",
-      "pricing": "9000 Ft"
-    },
-    {
-      "service_name": "Köpölyözés",
-      "detailed_description": "A köpölyözés egy hagyományos terápiás eljárás, amely vákuumos csészék segítségével stimulálja a bőrt és az alatta lévő szöveteket. Ez a technika fokozza a vérkeringést, segít a toxinok eltávolításában, oldja az izomfeszültséget, és csökkenti a gyulladást. Különösen hatékony háti fájdalmak, izomgörcsök, légúti problémák esetén, valamint sportolók regenerálódásához. Ajánlott azoknak, akik krónikus fájdalommal küzdenek, méregtelenítésre vágynak, vagy hagyományos gyógyító módszereket keresnek. Adott testrész köpölyözése",
-      "duration": "30 perc",
-      "pricing": "3500 Ft"
-    },
-    {
-      "service_name": "Kineziológiai Tapasz felhelyezése (TAPE)",
-      "detailed_description": "A kineziológiai tapasz (tape) egy rugalmas, breathable szalag, amelyet specifikus technikával helyeznek fel a bőrre az izmok és ízületek támogatására. Segít csökkenteni a fájdalmat, javítja a vérkeringést és a nyirokelvezetést, támogatja az izomfunkciót sérülés után, és megelőzi a további sérüléseket. Különösen hasznos sportolók számára, sérülések utáni rehabilitáció során, valamint krónikus fájdalmak kezelésében. Ajánlott azoknak, akik aktív életmódot folytatnak, sérülésből lábadoznak, vagy preventív támogatást keresnek. Adott testrészre értendő az ár!",
-      "duration": "30 perc",
-      "pricing": "4000 Ft"
-    }
-  ]
+export const ECHOPLAST_SERVICES = [
+  {
+    service_name: "Mellnagyobbítás",
+    description: "A mellek nagyobbítása szilikon implantátumok beültetésével. Kerek vagy anatómiás implantátumot helyeznek el a mirigy alá vagy a nagy mellizom alá.",
+    full_description: "A mellnagyobbítás a 'hálás' műtétek közé tartozik, mert a mellek nagyobbak, szebbek lesznek, a páciensek ettől általában boldogabbak, elégedettek lesznek. Ha nem nagyfokú a megereszkedés, akkor a bimbóudvar körüli körkörös felvarrást lehet alkalmazni a mellnagyobbítással egyidejűleg.",
+    citation: "https://www.echoplast.hu/mellnagyobbitas.html"
+  },
+  {
+    service_name: "Zsírleszívás",
+    description: "A bőr alatti zsírpárna csökkentése bizonyos testtájakon: tomportáj, combok, térd, has. Tartós eredmény pici hegekkel.",
+    full_description: "A bőr alatti zsírszövetet fellazítják és egy részét eltávolítják. Az eredmény tartós, feltéve, ha a páciens nagyobb hízással nem 'rontja el'. Nagy előnye, hogy csak pici kb. 1 cm-es hegekkel jár. A csípőtáji zsírszívás végezhető helyi érzéstelenítésben is.",
+    citation: "https://www.echoplast.hu/zsirleszivas.html"
+  },
+  {
+    service_name: "Mellfelvarrás",
+    description: "Terhességek, szoptatás vagy hízás-fogyás után a mellek megereszkedésének kezelése. Célja a lógás megszüntetése.",
+    full_description: "Két fajta mellfelvarrás létezik: a hagyományos fordított T-szerű és a vertikális (csak hosszanti heggel járó). A vertikális inkább a mirigyállományt rendezi át, ezért az eredmény tartós.",
+    citation: "https://www.echoplast.hu/mellfelvarras.html"
+  },
+  {
+    service_name: "Szemhéjplasztika",
+    description: "Alsó és felső szemhéjplasztika. A műtét után fiatalos tekintetet biztosít.",
+    full_description: "Az alsó szemhéj lehet táskás vagy a bőre ráncos. A felső szemhéjplasztikánál a megnyúlt, lógó szemhéjbőrből kimetszünk egy babérlevél alakú darabot. Akinek szép áthajlási redő alakítható ki, a tekintete fiatalossá válik. A műtét után kb. 1 hétig duzzadtak a szemek.",
+    citation: "https://www.echoplast.hu/szemhejplasztika.html"
+  },
+  {
+    service_name: "Hasplasztika",
+    description: "Feszes, lapos has elérése, ha a hasfali bőr túl laza, megnyúlt vagy a hasfal kitágult.",
+    full_description: "A műtét során kimetszünk egy haránt babérlevél alakú bőrt a bőraljával együtt, és szükség esetén a hasfal megraffolását (megfeszítését) is elvégzik.",
+    citation: "https://www.echoplast.hu/hasplasztika.html"
+  },
+  {
+    service_name: "Orrplasztika",
+    description: "Ha valaki nem elégedett az orra formájával. Kisebbítés, görbeség korrekciója, orrcsúcs formázása.",
+    full_description: "Leggyakrabban kisebbíteni kell az orrot, az orr görbeségét adó többletet levésik. Az orrcsúcsot keskenyíteni, hegyesíteni szokták ha kell. Ha a sövény ferde, ezt meg lehet műteni a külső orrplasztikával egyidejűleg.",
+    citation: "https://www.echoplast.hu/orrplasztika.html"
+  },
+  {
+    service_name: "Fülplasztika",
+    description: "Elálló fülek korrekciója. Nagyon 'hálás' műtét, szinte nincs nagyobb szövődmény.",
+    full_description: "A fül belső kagylórészének porcából kivesznek egy részt, ami által a fül közelebb kerül a fejhez. Majdnem mindig helyi érzéstelenítésben végzik, az alsó korhatár kb. 10 év.",
+    citation: "https://www.echoplast.hu/fulplasztika.html"
+  },
+  {
+    service_name: "Mellkisebbítés",
+    description: "A súlyos, nagy mellek kisebbé tétele és a lógás megszüntetése.",
+    full_description: "Általában a mellek alsó részének az állományából távolítanak el valamennyit, utána a mellet a mellfelvarrás technikájával állítják helyre. A bimbó-bimbóudvar egységet a bőrön áthelyezik.",
+    citation: "https://www.echoplast.hu/mellkisebbites.html"
+  },
+  {
+    service_name: "Arcplasztika (Face-lift)",
+    description: "Akkor végezhető, ha az arc vagy a nyak bőre laza, esetleg lóg. Fiatalosabb megjelenés érhető el.",
+    full_description: "Alapelv, hogy elsősorban nem a bőrt kell megfeszíteni, hanem az alatta levő izmos-hártyás hálózatot. Helyi és általános érzéstelenítésben is végezhető, sokszor a toka zsírszívásával kiegészítve. A műtét után az arc kb. 2 hétig duzzadt.",
+    citation: "https://www.echoplast.hu/arcplasztika.html"
+  },
+  {
+    service_name: "Hajátültetés",
+    description: "A férfias típusú kopaszodás kezelése. A tarkótájról vett hajszigetek átültetése.",
+    full_description: "A tarkótájról vett hajas-fejbőr-csíkból 1-4 hajszálat tartalmazó szigeteket vágnak, ezeket az érintett területen ejtett pici metszésekbe bújtatják. Az esztétikai hatás a nem túl vékony hajszálú, sötétebb hajárnyalatú pácienseknél igazán jó.",
+    citation: "https://www.echoplast.hu/hajatultetes.html"
+  },
+  {
+    service_name: "Hónalji hyperhidrosis kezelés",
+    description: "A hónalji túlzott izzadás tartós megoldása mirigyek helyi kimetszésével. Egyedül az ECHO végzi az országban.",
+    full_description: "Az országban egyedül az ECHO Plasztikai Sebészet végzi a hónalji hyperhidrosisban (túlzott izzadásban) szenvedőknél a mirigyek helyi kimetszését.",
+    citation: "https://www.echoplast.hu"
+  },
+  {
+    service_name: "Anyajegyek és bőrdaganatok kimetszése",
+    description: "Anyajegyek és bőrdaganatok sebészeti eltávolítása. Dr. Péter Zoltán szakterülete a cutan melanomák kezelése.",
+    full_description: "Dr. Péter Zoltán szakterülete a cutan melanomák sebészi kezelése, non-melanoma bőrtumorok sebészete.",
+    citation: "https://www.echoplast.hu"
+  },
+  {
+    service_name: "Gynecomastia kezelés",
+    description: "A férfi mellnagyobbodás sebészeti kezelése. Javítja az érintett férfiak életminőségét és önbizalmát.",
+    full_description: "A megnagyobbodott férfi mell korrekciója műtéti úton, amely javítja az érintett férfiak életminőségét és önbizalmát.",
+    citation: "https://www.echoplast.hu/galeria"
+  }
+];
+
+export const DOCTOR_CREDENTIALS = {
+  name: "Dr. Péter Zoltán",
+  title: "Egyetemi Főorvos",
+  specialty: "Plasztikai sebész",
+  experience_since: 1998,
+  education: [
+    "1988 - Debreceni Orvostudományi Egyetem, summa cum laude",
+    "1992 - Általános sebészet szakképesítés",
+    "1998 - Plasztikai sebészet szakképesítés"
+  ],
+  international_training: [
+    "1994 - Koppenhága, 3 hónap",
+    "1996 - Dublin, 1 hónap",
+    "1997 - Koppenhága, 2 hónap",
+    "2004 - Koppenhága, 2 hónap",
+    "2007 - Linköping, 2 hét"
+  ],
+  specializations: [
+    "Cutan melanomák sebészi kezelése",
+    "Non-melanoma bőrtumorok sebészete",
+    "Égéstraumatológia",
+    "Rekonstrukciós sebészet"
+  ],
+  publications: "Három klinikai témájú elsőszerzős közlemény tudományos folyóiratokban (Magyar Sebészet, Magyar Traumatológia, International Wound Journal, European Journal of Plastic Surgery)"
 };
 
+export const TRUST_ELEMENTS = [
+  { icon: "Award", value: "25+ év tapasztalat", subtitle: "1998 óta végzünk esztétikai műtéteket" },
+  { icon: "GraduationCap", value: "Egyetemi Főorvos", subtitle: "DE OEC Bőr- és Nemikórtani Klinika" },
+  { icon: "Globe", value: "Nemzetközi képzés", subtitle: "Koppenhága, Dublin, Linköping" },
+  { icon: "FileCheck", value: "ÁNTSZ engedélyezett", subtitle: "Engedélyszám: 060060274" }
+];
+
 export const LANDING_DATA: LandingData = {
-  "service_categories": [
+  service_categories: [
     {
-      "category_name": "Svéd Masszázs",
-      "description": "Klasszikus masszázstechnika a vérkeringés fokozására és az izomfeszültség oldására. 30, 60 vagy 90 perces kezelések."
+      category_name: "Mellműtétek",
+      description: "Mellnagyobbítás, mellfelvarrás, mellkisebbítés - modern technikákkal, tartós eredménnyel."
     },
     {
-      "category_name": "Relax Masszázs",
-      "description": "A teljes test és elme ellazítása lágy, nyugtató mozdulatokkal. Ideális stressz és feszültség oldására."
+      category_name: "Testformázás",
+      description: "Zsírleszívás, hasplasztika - feszesebb, formásabb test elérhető közelségben."
     },
     {
-      "category_name": "Aromaterápiás Masszázs",
-      "description": "A klasszikus masszázstechnikák ötvözése illóolajok terápiás hatásaival. Holisztikus megközelítés a test és lélek harmóniájáért."
+      category_name: "Arcplasztika",
+      description: "Szemhéjplasztika, arcplasztika, orrplasztika - fiatalos, harmonikus megjelenés."
     },
     {
-      "category_name": "Talpmasszázs",
-      "description": "Reflexológiai alapú kezelés, amely a talp stimulálásával az egész szervezetre pozitívan hat."
-    },
-    {
-      "category_name": "Speciális Kezelések",
-      "description": "Köpölyözés és kineziológiai tapasz felhelyezés – hagyományos és modern technikák a fájdalomcsillapításra."
+      category_name: "Speciális beavatkozások",
+      description: "Fülplasztika, hajátültetés, hyperhidrosis kezelés, bőrdaganatok eltávolítása."
     }
   ],
-  "treatment_benefits": [],
-  "unique_selling_propositions": [
-    { "value": "Képzett, tapasztalt masszőr" },
-    { "value": "6+ különböző masszázstípus" },
-    { "value": "Nyugodt, kellemes környezet" },
-    { "value": "Nyíregyháza központjában, könnyen megközelíthető" },
-    { "value": "Rugalmas időpontfoglalás" },
-    { "value": "Személyre szabott kezelések" }
+  treatment_benefits: [],
+  unique_selling_propositions: [
+    { value: "25+ év tapasztalat" },
+    { value: "Egyetemi főorvos" },
+    { value: "Nemzetközi képzés" },
+    { value: "ÁNTSZ engedélyezett rendelő" },
+    { value: "Személyre szabott konzultáció" },
+    { value: "Modern technikák" }
   ],
-  "pricing_structures": [],
-  "contact_details": {
-    "phone_number": "",
-    "address": "4400 Nyíregyháza, Szent István utca 2.",
-    "email_address": "",
-    "opening_hours": "Hétfőtől vasárnapig, előzetes bejelentkezéssel"
+  pricing_structures: [],
+  contact_details: {
+    phone_number: "+36/20 976-3574",
+    address: "Debrecen, Kossuth u. 56.",
+    email_address: "peterz@dote.hu",
+    opening_hours: "Előzetes bejelentkezéssel"
   },
-  "trust_signals": [
-    {
-      "type": "testimonial",
-      "content": "Sziasztok\nLe a kalappal Bence előtt 🙏🙏\nÜgyes, tapasztalt, erőskezű masszőr.",
-      "source": "Attila Sebők",
-      "reviewCount": "6 vélemény · 6 fotó",
-      "date": "egy éve",
-      "avatar": ""
-    },
-    {
-      "type": "testimonial",
-      "content": "Kiváló, alapos masszőr, aki nem csak a levegőbe beszél. Derék és hát fájásomat már két alkalom alatt rendbe hozta, a merev izmaimat fellazította. Csak ajánlani tudom!",
-      "source": "Zsuzsanna Izsák",
-      "reviewCount": "1 vélemény",
-      "date": "11 hónapja",
-      "avatar": ""
-    },
-    {
-      "type": "testimonial",
-      "content": "Köszönöm szépen a segítséget, a köpölyözést. Végtelenül kedves, hozzáértő fiatalember személyében tiszta környezetben várja a hát-, váll-, derékfájó embereket. Szívből ajánlom ❤️",
-      "source": "Anita Rátonyiné Kovács",
-      "reviewCount": "1 vélemény",
-      "date": "7 hónapja",
-      "avatar": ""
-    },
-    {
-      "type": "testimonial",
-      "content": "Maximális elégedettség és teljesen korrekt, rugalmas a hozzá állása, bárcsak mindenki ilyen lenne! Egy erős masszázst kértem Bencétől úgy érzem sikerült is. Sportolásból adódó izom letapadásokat lazán felmasszirozta. Köszönöm szépen, biztosan megyek még 💪👌👑",
-      "source": "Tibor Rodák",
-      "reviewCount": "2 vélemény",
-      "date": "8 hónapja",
-      "avatar": ""
-    },
-    {
-      "type": "testimonial",
-      "content": "Első alkalommal jártam Bencénél és nagyon meg vagyok elégedve a munkájával csak ajánlani tudom !!\nTiszta szép rendezett környezett vissza térő vendég leszek\nKöszönöm szépen Bence innen is a sok sok segítséget !!",
-      "source": "Róbert Kaló",
-      "reviewCount": "2 vélemény",
-      "date": "7 hónapja",
-      "avatar": ""
-    },
-    {
-      "type": "testimonial",
-      "content": "Először jártam Bencénél! Elég rég voltam már masszázson, de az első alkalmon volt is mit dolgoznia! Csípő, derék, hát, váll és nyak volt a célpont! Következő alkalommal már célkeresztbe kerülnek a lábak is. Jó élményekkel és felfrissülve távoztam tőle! Csak ajánlani tudom mindenkinek! Foglaljatok időpontot nem bánjátok meg! 😉",
-      "source": "Tibor",
-      "reviewCount": "Helyi idegenvezető · 19 vélemény · 139 fotó",
-      "date": "9 hónapja",
-      "avatar": ""
-    },
-    {
-      "type": "testimonial",
-      "content": "Végre egy jó kezű masszőr! Nagyon figyelmes, ügyes. Lazító masszázson jártam nála, szinte éreztem ahogy a terhek dobódnak le rólam! Ajánlom mindenkinek! 🙂",
-      "source": "Norbert Kánisz",
-      "reviewCount": "1 vélemény",
-      "date": "2 hónapja",
-      "avatar": ""
-    },
-    {
-      "type": "testimonial",
-      "content": "Erős hátfájdalom miatt kerestem fel Bencét. Először jártam nála, de maximálisan elégedett vagyok. Sokkal könnyebb a mozgásom, jobb a közérzetem. A szalon igényes, jó hangulatú! Külön köszönöm a frissítő vizet a végén! 🙂 Csak ajánlani tudom!",
-      "source": "Beus Pavlovics-Poór",
-      "reviewCount": "2 vélemény",
-      "date": "2 hónapja",
-      "avatar": ""
-    }
-  ]
+  trust_signals: []
 };
 
 export const FAQ_ITEMS = [
   {
-    question: "Milyen ruházatban történik a masszázs?",
-    answer: "A masszázs fehérneműben történik. A kezelés során a test azon részeit, amelyeket éppen nem masszírozok, törölközővel betakarva tartom a melegérzet és a komfort érdekében."
+    question: "Hogyan zajlik a konzultáció?",
+    answer: "A konzultáció során Dr. Péter Zoltán alaposan megvizsgálja az Ön helyzetét, megbeszélik az elképzeléseit és a realisztikus lehetőségeket. Részletes tájékoztatást kap a beavatkozásról, a kockázatokról és a várható eredményről. A konzultáció díja 15.000 Ft, amely beleszámít a műtét árába."
   },
   {
-    question: "Fájni fog a masszázs?",
-    answer: "A cél a feszültségoldás, ami a letapadt izmoknál járhat némi 'jóleső' fájdalommal, de sosem lehet elviselhetetlen. Folyamatosan kommunikálunk, az erősséget mindig az egyéni fájdalomküszöbödhoz igazítom."
+    question: "Mennyire fájdalmas a beavatkozás?",
+    answer: "A műtétek altatásban vagy helyi érzéstelenítésben történnek, így azok fájdalommentesek. A műtét után kezelhető fájdalom jelentkezhet, amelyet fájdalomcsillapítóval enyhítünk. A legtöbb páciens néhány nap után már nem szed fájdalomcsillapítót."
   },
   {
-    question: "Mennyivel evés után érdemes érkezni?",
-    answer: "A masszázs előtt 1-1,5 órával már nem ajánlott nehéz ételeket fogyasztani, mert a teli has kellemetlen lehet fekvés közben és megterheli a szervezetet."
+    question: "Mikor térhetek vissza a munkába?",
+    answer: "Ez a beavatkozás típusától függ. Kisebb műtétek (szemhéjplasztika, fülplasztika) után 1-2 hét, nagyobb műtétek (hasplasztika, mellműtétek) után 2-4 hét a felépülési idő. A pontos időt a konzultáción beszéljük meg."
   },
   {
-    question: "Mit tegyek, ha le kell mondanom az időpontot?",
-    answer: "Az élet néha közbeszól. Kérlek, ha nem tudsz eljönni, legalább 24 órával az időpont előtt jelezd telefonon vagy üzenetben, hogy másnak tudjam adni a helyet."
+    question: "Milyen kockázatai vannak a műtétnek?",
+    answer: "Minden sebészeti beavatkozásnak vannak kockázatai. A leggyakoribbak: vérzés, fertőzés, hegképződési zavarok. Dr. Péter Zoltán részletesen tájékoztatja Önt minden kockázatról a konzultáción, és mindent megtesz azok minimalizálásáért."
   },
   {
-    question: "Mikor NEM javasolt a masszázs?",
-    answer: "Lázas állapotban, fertőző betegség alatt, friss sérülések (törés, szakadás) esetén, vagy gyulladt visszérnél a masszázs ellenjavallt. Ha bizonytalan vagy, konzultáljunk telefonon!"
+    question: "Mennyibe kerül egy plasztikai műtét?",
+    answer: "Az árak a beavatkozás típusától és összetettségétől függnek. Pontos árajánlatot a konzultáción, az Ön egyéni igényeinek felmérése után tudunk adni. A konzultációra való jelentkezéskor szívesen adunk tájékoztató árintervallumot."
   }
 ];

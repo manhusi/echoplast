@@ -27,7 +27,7 @@ function LandingPage() {
 
 function App() {
   return (
-    <div className="min-h-screen bg-black font-body selection:bg-gold-400/30 selection:text-white">
+    <div className="min-h-screen bg-slate-50 font-body selection:bg-teal-500/30 selection:text-teal-900">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/foglalas" element={<BookingPage />} />

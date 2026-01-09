@@ -5,12 +5,13 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bence Masszázs Szalon | Nyíregyháza</title>
+  <title>ECHO Plasztikai Sebészet | Dr. Péter Zoltán | Debrecen</title>
+  <meta name="description" content="Dr. Péter Zoltán egyetemi főorvos - Plasztikai sebészeti rendelő Debrecenben. 25+ év tapasztalat, nemzetközi képzés. Mellnagyobbítás, zsírleszívás, arcplasztika, szemhéjplasztika." />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Nunito+Sans:wght@300;400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
   <script>
     tailwind.config = {
@@ -18,40 +19,70 @@
         extend: {
           colors: {
             primary: {
-              50: '#faf9f7',
-              100: '#f5f3ef',
-              200: '#e8e4db',
-              500: '#0a0a0a',
-              600: '#111111',
-              800: '#1a1a1a',
-              900: '#0a0a0a',
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              300: '#5eead4',
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
             },
-            secondary: {
-              50: '#fcf9f0',
-              100: '#f9f0d9',
-              200: '#f3e4c0',
-              400: '#d4af37',
-              500: '#c59d65',
-              600: '#b8860b',
+            medical: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
             },
-            gold: {
-              300: '#e6c677',
-              400: '#d4af37',
-              500: '#c59d65',
-              600: '#b8860b',
+            teal: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              300: '#5eead4',
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            },
+            slate: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
             }
           },
           fontFamily: {
-            heading: ['Manrope', 'sans-serif'],
-            body: ['Nunito Sans', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
           },
           animation: {
             marquee: 'marquee 60s linear infinite',
+            'fade-in': 'fadeIn 0.5s ease-out',
           },
           keyframes: {
             marquee: {
               '0%': { transform: 'translateX(0)' },
               '100%': { transform: 'translateX(-50%)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
             }
           }
         }
@@ -60,7 +91,7 @@
   </script>
   <style>
     body {
-      font-family: 'Nunito Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
     }
 
     h1,
@@ -69,7 +100,7 @@
     h4,
     h5,
     h6 {
-      font-family: 'Manrope', sans-serif;
+      font-family: 'Outfit', sans-serif;
     }
 
     .blob {
@@ -96,6 +127,18 @@
 
     .animate-marquee:hover {
       animation-play-state: paused;
+    }
+
+    /* Custom scrollbar for chat */
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 4px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
     }
   </style>
   <script type="importmap">
