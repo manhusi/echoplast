@@ -191,17 +191,7 @@ export const ChatInterface: React.FC = () => {
   };
 
   const handleBookingClick = () => {
-    const lastRecommendation = [...messages].reverse().find(m => m.isRecommendation && m.serviceData);
-    let url = '/foglalas';
-
-    if (lastRecommendation && lastRecommendation.serviceData) {
-      const params = new URLSearchParams();
-      params.append('service', lastRecommendation.serviceData.name);
-      params.append('reason', lastRecommendation.serviceData.reason);
-      url += `?${params.toString()}`;
-    }
-
-    window.location.href = url;
+    window.location.href = '/foglalas';
   };
 
   const restartChat = () => {
