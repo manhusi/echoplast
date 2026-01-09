@@ -105,8 +105,57 @@ export const BookingPage: React.FC = () => {
         </div>
 
         {/* Booking Widget Container */}
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-lg mx-auto mb-12">
           <BookingWidget initialService={recommendedService} />
+        </div>
+
+        {/* Cancellation Policy & Pass Info */}
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 backdrop-blur-sm">
+            <h3 className="font-heading font-bold text-white text-xl mb-6 flex items-center gap-2">
+              <span className="text-gold-400">ℹ️</span>
+              Lemondási Feltételek és Házirend
+            </h3>
+
+            <div className="space-y-6 text-gray-400 text-sm leading-relaxed">
+              <div>
+                <h4 className="text-white font-semibold mb-2">Időpont lemondása és módosítása</h4>
+                <ul className="space-y-2 list-disc pl-4">
+                  <li><strong>48 órával</strong> az időpont előtt: Díjmentes.</li>
+                  <li><strong>24-48 órán belül</strong>: Módosítás/lemondás esetén felár fizetendő.</li>
+                  <li><strong>Aznap / Meg nem jelenés</strong>: A kezelés teljes díja fizetendő.</li>
+                </ul>
+                <p className="mt-2 text-xs italic text-gray-500">
+                  Meg nem jelenés és értesítés elmulasztása esetén a későbbiekben nem áll módomban új időpontot biztosítani.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Ajándékutalványok</h4>
+                  <p>
+                    Lefoglalt időpontban való meg nem jelenés esetén az utalvány <strong>felhasználtnak minősül</strong>.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-semibold mb-2">Bérletek érvényessége</h4>
+                  <ul className="space-y-1">
+                    <li><span className="text-gold-400">3 alkalmas:</span> 5 hónap</li>
+                    <li><span className="text-gold-400">5 alkalmas:</span> 6 hónap</li>
+                    <li><span className="text-gold-400">8 alkalmas:</span> 8 hónap</li>
+                    <li><span className="text-gold-400">10 alkalmas:</span> 12 hónap</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-gray-800 text-center">
+                <p className="text-white font-medium">
+                  Kérlek, a fentiek tudatában foglalj időpontot. Köszönöm az együttműködést!
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Footer note */}
